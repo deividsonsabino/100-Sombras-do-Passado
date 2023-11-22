@@ -15,7 +15,7 @@ public class PlayerAnimations : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         inputs.Set(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         Vector2 inputValues = XYAxis.action.ReadValue<Vector2>();
@@ -24,7 +24,9 @@ public class PlayerAnimations : MonoBehaviour
         if (inputs != Vector3.zero)
         {
             animator.SetBool("IsWalk", true);
-        } else {
+        }
+        else
+        {
             animator.SetBool("IsWalk", false);
         }
     }
