@@ -1,20 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private InputActionReference XYAxis;
+    [SerializeField] private AxisState xAxis;
+    [SerializeField] private AxisState yAxis;
+
     [SerializeField] private Transform lookAt;
-    [SerializeField] private float sensitivity = 1.0f;
 
-    private void Update()
+    void Update()
     {
-        Vector2 inputValues = XYAxis.action.ReadValue<Vector2>();
-        inputValues *= sensitivity;
+        xAxis.Update(Time.deltaTime);
+        yAxis.Update(Time.deltaTime);
 
-        lookAt.eulerAngles = new Vector3(inputValues.y, inputValues.x, 0);
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, inputValues.x, 0), 0.5f * Time.deltaTime);
+        lookAt.eulerAngles = new Vector3(yAxis.Value, xAxis.Value, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, xAxis.Value, 0), 10 * Time.deltaTime);
+
     }
 }

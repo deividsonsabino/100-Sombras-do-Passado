@@ -10,29 +10,39 @@ public class Player : MonoBehaviour
 
     private Vector2 moveDirection;
 
-    private Rigidbody rb;
+    private Vector3 input;
 
-    private void Awake()
+    private CharacterController character;
+
+    void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        character = GetComponent<CharacterController>();
     }
-
     public void OnMove(InputAction.CallbackContext context)
     {
         moveDirection = context.ReadValue<Vector2>();
     }
 
-    private void Update()
+    void Update()
     {
-        rb.AddForce(new Vector3(moveDirection.x, 0, moveDirection.y) * moveSpeed);
+        character.Move(transform.TransformDirection(new Vector3(moveDirection.x,-1,moveDirection.y)).normalized * Time.deltaTime * moveSpeed);
+/*         input.Set(moveDirection.x, 0, moveDirection.y);
+        character.Move(input * Time.deltaTime * moveSpeed);
+        character.Move(Vector3.down * Time.deltaTime);
+        if (input != Vector3.zero) {
+            transform.forward = Vector3.Slerp(transform.forward, input, Time.deltaTime * 10);
+        } */
     }
 
-    private void movePlayer(Vector3 direction) { 
-        rb.velocity = direction * moveSpeed * Time.fixedDeltaTime;
+    private void movePlayer(Vector3 direction)
+    {
+        //transform.position = new Vector3(direction.x, 0f, direction.y) * moveSpeed * Time.deltaTime;
+        //transform.rotation = Quaternion.AngleAxis(Camera.main.transform.eulerAngles.y, Vector2.up);
+
     }
 
-    private void FixedUpdate()
-    {
-        movePlayer(moveDirection);
-    }
+    /*     private void FixedUpdate()
+        {
+            movePlayer(moveDirection);
+        } */
 }
